@@ -3,16 +3,33 @@ package projet_test;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import projet_test.model.Utilisateur;
+
+
 
 public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+
+    private ObservableList<Utilisateur> utilisateurData = FXCollections.observableArrayList();
+
+    public MainApp(){
+    	utilisateurData.add(new Utilisateur("WANG","Yuchen"));
+    	utilisateurData.add(new Utilisateur("WEN","Hao"));
+    	utilisateurData.add(new Utilisateur("TEST01","Test01"));
+    }
+
+    public ObservableList<Utilisateur> getUtilisateurData(){
+    	return utilisateurData;
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -50,11 +67,15 @@ public class MainApp extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/ProjetOverview.fxml"));
+            loader.setLocation(MainApp.class.getResource("view/UtilisateurOverview.fxml"));
             AnchorPane ProjetOverview = (AnchorPane)loader.load();
 
             // Set person overview into the center of root layout.
             rootLayout.setCenter(ProjetOverview);
+
+            //give the controller access to the mian app
+            UtilisateurOverviewController controller = loader.getController();
+            controller.setMainApp(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
