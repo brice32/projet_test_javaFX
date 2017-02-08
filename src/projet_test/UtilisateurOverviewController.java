@@ -91,5 +91,34 @@ public class UtilisateurOverviewController {
 //		System.out.println(selectedIndex);
 	}
 
+	@FXML
+	private void handleNewUtilisateur() {
+	    Utilisateur tempUtilisateur = new Utilisateur();
+	    boolean okClicked = mainApp.showUtilisateurEditDialog(tempUtilisateur);
+	    if (okClicked) {
+	        mainApp.getUtilisateurData().add(tempUtilisateur);
+	    }
+	}
+
+	@FXML
+	private void handleEditUtilisateur() {
+	    Utilisateur selectedUtilisateur = utilisateurTable.getSelectionModel().getSelectedItem();
+	    if (selectedUtilisateur != null) {
+	        boolean okClicked = mainApp.showUtilisateurEditDialog(selectedUtilisateur);
+	        if (okClicked) {
+	            showUtilisateurDetails(selectedUtilisateur);
+	        }
+
+	    } else {
+	        // Nothing selected.
+
+	        Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Person Selected");
+			alert.setContentText("Please select a person in the table.");
+
+			alert.showAndWait();
+	    }
+	}
 
 }
