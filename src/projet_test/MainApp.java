@@ -1,6 +1,10 @@
 package projet_test;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -19,17 +23,54 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+    private Connection connection;
+
 
     private ObservableList<Utilisateur> utilisateurData = FXCollections.observableArrayList();
 
     public MainApp(){
-    	utilisateurData.add(new Utilisateur("WANG","Yuchen"));
-    	utilisateurData.add(new Utilisateur("WEN","Hao"));
-    	utilisateurData.add(new Utilisateur("TEST01","Test01"));
+//    	utilisateurData.add(new Utilisateur("WANG","Yuchen"));
+//    	utilisateurData.add(new Utilisateur("WEN","Hao"));
+//    	utilisateurData.add(new Utilisateur("TEST01","Test01"));
+
+    	try {
+		      Class.forName("com.mysql.jdbc.Driver");     //¼ÓÔØMYSQL JDBCÇý¶¯³ÌÐò
+		      //Class.forName("org.gjt.mm.mysql.Driver");
+		     System.out.println("Success loading Mysql Driver!");
+		    }
+		    catch (Exception e) {
+		      System.out.print("Error loading Mysql Driver!");
+		      e.printStackTrace();
+		    }
+    	try{
+    		connection=DriverManager.getConnection("jdbc:mysql://projeti2javawang.clepbqlz5cny.us-west-2.rds.amazonaws.com:3306/projet_test", "root", "3il3il3il");
+    	}
+    	 catch(Exception e){
+    		 System.out.println("unsuccessful connect Mysql server!");
+    		 e.printStackTrace();
+    	 }
+    	 System.out.println("Success connect Mysql server!");
+
+    	try{
+    	 Statement statement = connection.createStatement();
+         ResultSet result = statement.executeQuery("select * from utilisateur");
+         while (result.next()) {
+//             System.out.println(result.getString("firstName"));
+
+           }
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+
     }
 
+    /*
+     * pour load these utilisateurs in BDD mysql
+     */
     public ObservableList<Utilisateur> getUtilisateurData(){
     	return utilisateurData;
+//    	utilisateurData.clear();
+
     }
 
     @Override

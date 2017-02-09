@@ -8,10 +8,12 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import java.sql.*;
 
 
 public class Utilisateur {
 
+	private final IntegerProperty id;
 	private final StringProperty firstName;
     private final StringProperty lastName;
     private final StringProperty street;
@@ -19,22 +21,61 @@ public class Utilisateur {
     private final StringProperty city;
     private final ObjectProperty<LocalDate> birthday;
 
-    /**
-     * Default constructor.
-     */
+//    /**
+//     * Default constructor.
+//     */
+//    public Utilisateur(){
+//    	this(null, null);
+//    }
+//
+//    public Utilisateur(String firstName, String lastName){
+//    	this.id= new SimpleIntegerProperty(0);
+//    	this.firstName = new SimpleStringProperty(firstName);
+//    	this.lastName = new SimpleStringProperty(lastName);
+//    	// Some initial dummy data, just for convenient testing.
+//        this.street = new SimpleStringProperty("some street");
+//        this.postalCode = new SimpleIntegerProperty(1234);
+//        this.city = new SimpleStringProperty("some city");
+//        this.birthday = new SimpleObjectProperty<LocalDate>(LocalDate.of(1999, 2, 21));
+//    }
+
     public Utilisateur(){
-    	this(null, null);
+    	this(null);
     }
 
-    public Utilisateur(String firstName, String lastName){
-    	this.firstName = new SimpleStringProperty(firstName);
-    	this.lastName = new SimpleStringProperty(lastName);
+    public Utilisateur(ResultSet resultat){
 
-    	// Some initial dummy data, just for convenient testing.
-        this.street = new SimpleStringProperty("some street");
-        this.postalCode = new SimpleIntegerProperty(1234);
-        this.city = new SimpleStringProperty("some city");
-        this.birthday = new SimpleObjectProperty<LocalDate>(LocalDate.of(1999, 2, 21));
+    	    	this.id= new SimpleIntegerProperty(0);
+    	    	this.firstName = new SimpleStringProperty("firstName");
+    	    	this.lastName = new SimpleStringProperty("lastName");
+    	        this.street = new SimpleStringProperty("some street");
+    	        this.postalCode = new SimpleIntegerProperty(1234);
+    	        this.city = new SimpleStringProperty("some city");
+    	        this.birthday = new SimpleObjectProperty<LocalDate>(LocalDate.of(1999, 2, 21));
+    	if(resultat!=null){
+    	try{
+    		this.setId(resultat.getInt("id"));
+//    		this.id= new SimpleIntegerProperty(resultat.getInt("id"));
+//        	this.firstName = new SimpleStringProperty(resultat.getString("firstName"));
+//        	this.lastName = new SimpleStringProperty(resultat.getString("lastName"));
+//        	// Some initial dummy data, just for convenient testing.
+//            this.street = new SimpleStringProperty("some street");
+//            this.postalCode = new SimpleIntegerProperty(1234);
+//            this.city = new SimpleStringProperty("some city");
+//            this.birthday = new SimpleObjectProperty<LocalDate>(LocalDate.of(1999, 2, 21));
+    	}catch(Exception e){
+    		System.out.println("Le erreu dans methode utilisateur!\n");
+    		e.printStackTrace();
+    	}
+    	}
+    }
+
+    public int getId(){
+    	return id.get();
+    }
+
+    public void setId(int id){
+    	this.id.set(id);
     }
 
     public String getFirstName(){
@@ -108,4 +149,6 @@ public class Utilisateur {
     public ObjectProperty<LocalDate> birthdayProperty() {
         return birthday;
     }
+
+
 }
