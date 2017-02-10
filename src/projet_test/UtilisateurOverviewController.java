@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import projet_test.model.Utilisateur;
+import projet_test.model.UtilisateurConnect;
 import projet_test.utilisation.DateUtilisation;
 
 
@@ -31,6 +32,8 @@ public class UtilisateurOverviewController {
 	private Label birthdayLabel;
 	@FXML
 	private MainApp mainApp;
+
+
 
 	public UtilisateurOverviewController() {
 
@@ -78,7 +81,9 @@ public class UtilisateurOverviewController {
 	@FXML
 	private void handleDeleteUtilisateur(){
 		int selectedIndex = utilisateurTable.getSelectionModel().getSelectedIndex();
+		Utilisateur selectedUtilisateur = utilisateurTable.getSelectionModel().getSelectedItem();
 		if(selectedIndex>=0){
+		UtilisateurConnect.utlisateurDelete(mainApp.connection, selectedUtilisateur);
 		utilisateurTable.getItems().remove(selectedIndex);
 		}else{
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -97,6 +102,8 @@ public class UtilisateurOverviewController {
 	    boolean okClicked = mainApp.showUtilisateurEditDialog(tempUtilisateur);
 	    if (okClicked) {
 	        mainApp.getUtilisateurData().add(tempUtilisateur);
+	        UtilisateurConnect.utilisateurCreate(mainApp.connection, tempUtilisateur);
+	        this.handleReloadUtilisateurTable();
 	    }
 	}
 
@@ -107,6 +114,7 @@ public class UtilisateurOverviewController {
 	        boolean okClicked = mainApp.showUtilisateurEditDialog(selectedUtilisateur);
 	        if (okClicked) {
 	            showUtilisateurDetails(selectedUtilisateur);
+	            UtilisateurConnect.utilisateurModifier(mainApp.connection, selectedUtilisateur);
 	        }
 
 	    } else {
@@ -116,9 +124,12 @@ public class UtilisateurOverviewController {
 			alert.setTitle("No Selection");
 			alert.setHeaderText("No Person Selected");
 			alert.setContentText("Please select a person in the table.");
-
 			alert.showAndWait();
 	    }
 	}
 
+	@FXML
+	private void handleReloadUtilisateurTable(){
+		utilisateurTable.setItems(UtilisateurConnect.listUtilisateur(mainApp.connection));
+	}
 }

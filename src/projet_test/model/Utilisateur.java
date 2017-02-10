@@ -8,6 +8,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import projet_test.utilisation.DateUtilisation;
+
 import java.sql.*;
 
 
@@ -55,14 +57,12 @@ public class Utilisateur {
     	if(resultat!=null){
     	try{
     		this.setId(resultat.getInt("id"));
-//    		this.id= new SimpleIntegerProperty(resultat.getInt("id"));
-//        	this.firstName = new SimpleStringProperty(resultat.getString("firstName"));
-//        	this.lastName = new SimpleStringProperty(resultat.getString("lastName"));
-//        	// Some initial dummy data, just for convenient testing.
-//            this.street = new SimpleStringProperty("some street");
-//            this.postalCode = new SimpleIntegerProperty(1234);
-//            this.city = new SimpleStringProperty("some city");
-//            this.birthday = new SimpleObjectProperty<LocalDate>(LocalDate.of(1999, 2, 21));
+    		this.setFirstName(resultat.getString("firstName"));
+    		this.setLastName(resultat.getString("lastName"));
+    		this.setCity(resultat.getString("city"));
+    		this.setStreet(resultat.getString("street"));
+    		this.setPostalCode(resultat.getInt("postalCode"));
+    		this.setBirthday(DateUtilisation.parse(resultat.getString("birthday")));
     	}catch(Exception e){
     		System.out.println("Le erreu dans methode utilisateur!\n");
     		e.printStackTrace();

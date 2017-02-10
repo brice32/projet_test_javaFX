@@ -16,14 +16,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import projet_test.model.Utilisateur;
-
+import projet_test.model.UtilisateurConnect;
 
 
 public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private Connection connection;
+    public Connection connection;
 
 
     private ObservableList<Utilisateur> utilisateurData = FXCollections.observableArrayList();
@@ -51,17 +51,18 @@ public class MainApp extends Application {
     	 }
     	 System.out.println("Success connect Mysql server!");
 
-    	try{
-    	 Statement statement = connection.createStatement();
-         ResultSet result = statement.executeQuery("select * from utilisateur");
-         while (result.next()) {
-//             System.out.println(result.getString("firstName"));
-
-           }
-    	}catch(Exception e){
-    		e.printStackTrace();
-    	}
-
+//    	 utilisateurData.clear();
+//    	try{
+//    	 Statement statement = connection.createStatement();
+//         ResultSet result = statement.executeQuery("SELECT id,firstName,lastName,street,postalCode,city,DATE_FORMAT(birthday,GET_FORMAT(DATE,'EUR')) AS birthday FROM utilisateur");
+//         while (result.next()) {
+////             System.out.println(result.getString("firstName"));
+//        	 utilisateurData.add(new Utilisateur(result));
+//           }
+//    	}catch(Exception e){
+//    		e.printStackTrace();
+//    	}
+    	 utilisateurData=UtilisateurConnect.listUtilisateur(connection);
     }
 
     /*
